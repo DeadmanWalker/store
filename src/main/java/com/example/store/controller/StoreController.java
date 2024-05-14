@@ -73,12 +73,6 @@ public class StoreController {
 		return "redirect:/customer";
 	}
 	
-	@DeleteMapping("lead/delete/{id}")
-	String deleteLead(@PathVariable String id) {
-		LeadDAO.deleteLead(Integer.parseInt(id));
-		return "redirect:/customer";
-	}
-	
 	@GetMapping("/contact/create/{id}")
 	String getCreateContactView(HttpSession session, Model model, @PathVariable String id) {
 		if (session.getAttribute("USER") == null)

@@ -2,7 +2,9 @@ package com.example.store.controller;
 
 import java.util.ArrayList;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,4 +20,9 @@ public class ContactController {
     public ArrayList<Contact> getAllContacts() {
         return ContactDAO.getContacts();
     }
+	
+	@DeleteMapping("{id}")
+	void deleteContact(@PathVariable String id) {
+		ContactDAO.deleteContact(Integer.parseInt(id));
+	}
 }

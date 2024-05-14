@@ -248,20 +248,104 @@
         .catch(error => {
             console.error('Error fetching leads:', error);
         });
+
         function editLead(id) {
             window.location.href = `/lead/edit/${id}`;
         }
         function deleteLead(id) {
             if (confirm('Are you sure you want to delete this lead?')) {
-                window.location.href = `/lead/delete/${id}`;
+                // Proceed with deletion
+                fetch(`http://localhost:8080/api/leads/${id}`, {
+                    method: 'DELETE'
+                })
+                .then(response => {
+                    if (response.ok) {
+                        // Remove the lead from the table
+                        document.querySelector(`tr[data-id="${id}"]`).remove();
+                        alert('Lead deleted successfully');
+                    } else {
+                        alert('Error deleting lead');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error deleting lead:', error);
+                });
+                fetch('http://localhost:8080/api/leads')
+        .then(response => response.json())
+        .then(data => {
+            const leadsTableBody = document.getElementById('leadsTableBody');
+            // Clear existing rows
+            leadsTableBody.innerHTML = '';/*<![CDATA[*/
+            // Populate table with fetched leads
+            data.forEach(lead => {
+                const row = `<tr>
+                                <td>${lead.id}</td>
+                                <td>${lead.name}</td>
+                                <td>${lead.email}</td>
+                                <td>${lead.phone}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary" onclick="editLead(${lead.id})">Edit</button>
+                                    <button class="btn btn-sm btn-danger" onclick="deleteLead(${lead.id})">Delete</button>
+                                </td>
+                            </tr>`;
+                leadsTableBody.insertAdjacentHTML('beforeend', row);
+            });
+            // Show the leads table
+            document.getElementById('leadsTable').style.display = 'block';/*]]>*/
+        })
+        .catch(error => {
+            console.error('Error fetching leads:', error);
+        });
             }
         }
         function editContact(id) {
             window.location.href = `/contact/edit/${id}`;
         }
         function deleteContact(id) {
-            if (confirm('Are you sure you want to delete this contact?')) {
-                window.location.href = `/contact/delete/${id}`;
+            if (confirm('Are you sure you want to delete this lead?')) {
+                // Proceed with deletion
+                fetch(`http://localhost:8080/api/contacts/${id}`, {
+                    method: 'DELETE'
+                })
+                .then(response => {
+                    if (response.ok) {
+                        // Remove the lead from the table
+                        document.querySelector(`tr[data-id="${id}"]`).remove();
+                        alert('Lead deleted successfully');
+                    } else {
+                        alert('Error deleting lead');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error deleting lead:', error);
+                });
+                fetch('http://localhost:8080/api/contacts')
+            .then(response => response.json())
+            .then(data => {
+                const contactsTableBody = document.getElementById('contactsTableBody');
+                // Clear existing rows
+                contactsTableBody.innerHTML = '';/*<![CDATA[*/
+                // Populate table with fetched leads
+                data.forEach(contact => {
+                    const row = `<tr>
+                                    <td>${contact.id}</td>
+                                    <td>${contact.name}</td>
+                                    <td>${contact.email}</td>
+                                    <td>${contact.phone}</td>
+                                    <td> 
+                                        <button class="btn btn-sm btn-primary" onclick="editContact(${contact.id})">Edit</button>
+                                        <button class="btn btn-sm btn-danger" onclick="deleteContact(${contact.id})">Delete</button>
+                                        
+                                    </td>
+                                </tr>`;
+                    contactsTableBody.insertAdjacentHTML('beforeend', row);/*]]>*/
+                });
+                // Show the leads table
+                document.getElementById('contactsTable').style.display = 'block';
+            })
+            .catch(error => {
+                console.error('Error fetching contacts:', error);
+            });
             }
         }
     </script>
