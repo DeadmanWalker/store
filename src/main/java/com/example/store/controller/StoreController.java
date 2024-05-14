@@ -115,4 +115,11 @@ public class StoreController {
 		ContactDAO.deleteContact(Integer.parseInt(id));
 		return "redirect:/customer";
 	}
+	
+	@GetMapping("/order")
+	String getOrderView(HttpSession session) {
+		if (session.getAttribute("USER") == null)
+			return "redirect:/login";
+		return "order.html";
+	}
 }

@@ -7,6 +7,7 @@ public class Order {
 	int id;
 	Contact contact;
 	Date due_date;
+	String status;
 	String address;
 	ArrayList<OrderItem> order_items;
 	
@@ -43,4 +44,11 @@ public class Order {
 	public void setOrder_items(ArrayList<OrderItem> order_items) {
 		this.order_items = order_items;
 	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
 }
