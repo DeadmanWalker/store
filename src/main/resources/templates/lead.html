@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Lead Form</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Custom CSS to adjust spacing */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">Store Manager</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <!-- Add navigation links here -->
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Orders</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/customer">Customers</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+<div class="container">
+    <h2>Create Lead</h2>
+    <form th:object="${lead}" th:action="@{/lead/save/{id}(id = ${lead.id})}" th:method="${id} <= 0 ? POST : PUT">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="leadOwner">Lead Owner:</label>
+                    <select class="form-control" id="leadOwner" name="leadOwner" th:field="*{lead_owner.id}">
+                        <!-- Add more options as needed -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input th:value="${lead.name}" type="text" class="form-control" id="name" name="name">
+                </div>
+                <div class="form-group">
+                    <label for="company">Company:</label>
+                    <input th:value="${lead.company}" type="text" class="form-control" id="company" name="company">
+                </div>
+                <div class="form-group">
+                    <label for="industry">Industry:</label>
+                    <input th:value="${lead.industry}" type="text" class="form-control" id="industry" name="industry">
+                </div>
+                <div class="form-group">
+                    <label for="title">Title:</label>
+                    <input th:value="${lead.title}" type="text" class="form-control" id="title" name="title">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input th:value="${lead.email}" type="email" class="form-control" id="email" name="email">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone:</label>
+                    <input th:value="${lead.phone}" type="tel" class="form-control" id="phone" name="phone">
+                </div>
+                <div class="form-group">
+                    <label for="website">Website:</label>
+                    <input th:value="${lead.website}" type="url" class="form-control" id="website" name="website">
+                </div>
+                <div class="form-group">
+                    <label for="leadSource">Lead Source:</label>
+                    <select class="form-control" id="leadSource" name="leadSource">
+                        <option value="Advertisement">Advertisement</option>
+                        <option value="Employee Referral">Employee Referral</option>
+                        <option value="External Referral">External Referral</option>
+                        <option value="Cold Call">Cold Call</option>
+                        <!-- Add more options as needed -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="leadStatus">Lead Status:</label>
+                    <select class="form-control" id="leadStatus" name="leadStatus">
+                        <option value="Attempted to Contact">Attempted to Contact</option>
+                        <option value="Contact in Future">Contact in Future</option>
+                        <option value="Contacted">Contacted</option>
+                        <option value="Junk Lead">Junk Lead</option>
+                        <option value="Lost Lead">Lost Lead</option>
+                        <!-- Add more options as needed -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="rating">Rating:</label>
+                    <select class="form-control" id="rating" name="rating">
+                        <option value="Accquired">Accquired</option>
+                        <option value="Active">Active</option>
+                        <option value="Market Failed">Market Failed</option>
+                        <option value="Project Cancelled">Project Cancelled</option>
+                        <option value="Shut Down">Shut Down</option>
+                        <!-- Add more options as needed -->
+                    </select>
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        fetch('/api/users')
+            .then(response => response.json())
+            .then(data => {
+                const leadOwnerSelect = document.getElementById('leadOwner');
+                data.forEach(user => {
+                    const option = document.createElement('option');
+                    option.value = user.id;
+                    option.textContent = user.name;
+                    leadOwnerSelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error fetching users:', error));
+    });
+</script>
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

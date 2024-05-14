@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Management - Store Manager</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .customer-container {
+            margin-top: 50px;
+        }
+        .table-container {
+            margin-top: 20px;
+        }
+        .section-title {
+            margin-top: 40px;
+        }
+        .navbar-nav .nav-link.active {
+            font-weight: bold;
+            color: #ffc107;
+        }
+        .sub-navbar {
+            background-color: #343a40;
+            padding: 0;
+            margin-top: 20px;
+        }
+        .sub-navbar .nav-link {
+            color: #ffffff;
+        }
+        .sub-navbar .nav-link.active {
+            font-weight: bold;
+            color: #ffc107;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">Store Manager</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Orders</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/customer">Customers</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container customer-container">
+        <h2>Customer Management</h2>
+
+        <nav class="navbar navbar-expand-lg sub-navbar">
+            <div class="container">
+                <div class="collapse navbar-collapse" id="subNavbarNav">
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#" id="navLeads">Leads</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" id="navContacts">Contacts</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" id="navAccounts">Accounts</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Leads Section -->
+        <div class="table-container" id="leadsTable">
+            <div class="section-title">
+                <h3>Leads</h3>
+                <a th:href="@{lead/create/{id}(id=0)}" class="btn btn-primary">New Lead</a>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id='leadsTableBody'>
+                    <tr>
+                        <td>1</td>
+                        <td>John Doe</td>
+                        <td>john@example.com</td>
+                        <td>123-456-7890</td>
+                        <td>
+                            <button class="btn btn-sm btn-primary">Edit</button>
+                            <button class="btn btn-sm btn-danger">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Contacts Section -->
+        <div class="table-container" id="contactsTable" style="display: none;">
+            <div class="section-title">
+                <h3>Contacts</h3>
+                <button class="btn btn-primary" id="addContact">Add Contact</button>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Actions</h>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Jane Smith</td>
+                        <td>jane@example.com</td>
+                        <td>987-654-3210</td>
+                        <td>
+                            <button class="btn btn-sm btn-primary">Edit</button>
+                            <button class="btn btn-sm btn-danger">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Accounts Section -->
+        <div class="table-container" id="accountsTable" style="display: none;">
+            <div class="section-title">
+                <h3>Accounts</h3>
+                <button class="btn btn-primary" id="addAccount">Add Account</button>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Company Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Actions</h>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Acme Corporation</td>
+                        <td>info@acme.com</td>
+                        <td>555-123-4567</td>
+                        <td>
+                            <button class="btn btn-sm btn-primary">Edit</button>
+                            <button class="btn btn-sm btn-danger">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.sub-navbar .nav-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.querySelectorAll('.sub-navbar .nav-link').forEach(nav => nav.classList.remove('active'));
+                    this.classList.add('active');
+                    showSection(this.id.replace('nav', '').toLowerCase() + 'Table');
+                });
+            });
+
+            document.getElementById('addContact').addEventListener('click', function() {
+                alert('Add Contact button clicked');
+                // Add your code here to handle adding a contact
+            });
+
+            document.getElementById('addAccount').addEventListener('click', function() {
+                alert('Add Account button clicked');
+                // Add your code here to handle adding an account
+            });
+        });
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.table-container').forEach(container => container.style.display = 'none');
+            document.getElementById(sectionId).style.display = 'block';
+        }
+
+        document.getElementById('navLeads').addEventListener('click', function() {
+            fetch('http://localhost:8080/api/leads')
+            .then(response => response.json())
+            .then(data => {
+                const leadsTableBody = document.getElementById('leadsTableBody');
+                // Clear existing rows
+                leadsTableBody.innerHTML = '';
+                // Populate table with fetched leads
+                data.forEach(lead => {
+                    const row = `<tr>
+                                    <td>${lead.id}</td>
+                                    <td>${lead.name}</td>
+                                    <td>${lead.email}</td>
+                                    <td>${lead.phone}</td>
+                                    <td>
+                                        <a th:ref="@{lead/edit/{id}(id=${lead.id})}" class="btn btn-sm btn-primary">Edit</a>
+                                        <button class="btn btn-sm btn-danger">Delete</button>
+                                    </td>
+                                </tr>`;
+                    leadsTableBody.insertAdjacentHTML('beforeend', row);
+                });
+                // Show the leads table
+                document.getElementById('leadsTable').style.display = 'block';
+            })
+            .catch(error => {
+                console.error('Error fetching leads:', error);
+            });
+        });
+
+        fetch('http://localhost:8080/api/leads')
+        .then(response => response.json())
+        .then(data => {
+            const leadsTableBody = document.getElementById('leadsTableBody');
+            // Clear existing rows
+            leadsTableBody.innerHTML = '';
+            // Populate table with fetched leads
+            data.forEach(lead => {
+                const row = `<tr>
+                                <td>${lead.id}</td>
+                                <td>${lead.name}</td>
+                                <td>${lead.email}</td>
+                                <td>${lead.phone}</td>
+                                <td>
+                                    <a th:ref="@{lead/edit/{id}(id=${lead.id})}" class="btn btn-sm btn-primary">Edit</a>
+                                    <button class="btn btn-sm btn-danger">Delete</button>
+                                </td>
+                            </tr>`;
+                leadsTableBody.insertAdjacentHTML('beforeend', row);
+            });
+            // Show the leads table
+            document.getElementById('leadsTable').style.display = 'block';
+        })
+        .catch(error => {
+            console.error('Error fetching leads:', error);
+        });
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+
