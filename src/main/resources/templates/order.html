@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders List - Store Manager</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .order-container {
+            margin-top: 50px;
+        }
+        .order-table {
+            margin-top: 20px;
+        }
+        .order-table th, .order-table td {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container order-container">
+        <h2>Orders List</h2>
+        <table id="ordersTable" class="table table-bordered order-table">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Contact Name</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Order rows will be dynamically populated here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $.ajax({
+                url: '/api/orders',
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    var ordersTable = $('#ordersTable tbody');
+                    $.each(data, function(index, order) {
+                        var row = '<tr>' +
+                            '<td>' + order.contactName + '</td>' +
+                            '<td>' + order.dueDate + '</td>' +
+                            '<td>' + order.status + '</td>' +
+                            '</tr>';
+                        ordersTable.append(row);
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching orders:', error);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Order - Store Manager</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .order-container {
+            margin-top: 50px;
+        }
+        .form-group label {
+            font-weight: bold;
+        }
+        .btn-submit {
+            margin-top: 20px;
+        }
+        .product-table {
+            margin-top: 20px;
+        }
+        .product-table th, .product-table td {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">Store Manager</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Orders</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Customers</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Reports</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container order-container">
+        <h2>Create Order</h2>
+        <form>
+            <div class="form-group">
+                <label for="contactName">Contact Name</label>
+                <input type="text" class="form-control" id="contactName" placeholder="Enter contact name" required>
+            </div>
+            <div class="form-group">
+                <label for="dueDate">Due Date</label>
+                <input type="date" class="form-control" id="dueDate" required>
+            </div>
+            <div class="form-group">
+                <label for="status">Status</label>
+                <select class="form-control" id="status" required>
+                    <option value="">Select status</option>
+                    <option value="pending">Pending</option>
+                    <option value="processed">Processed</option>
+                    <option value="shipped">Shipped</option>
+                    <option value="delivered">Delivered</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="address">Address</label>
+                <textarea class="form-control" id="address" rows="3" placeholder="Enter address" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="productTable">Products</label>
+                <table class="table table-bordered product-table" id="productTable">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Amount</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <select class="form-control product-select">
+                                    <option value="">Select product</option>
+                                    <option value="Product1">Product1</option>
+                                    <option value="Product2">Product2</option>
+                                    <option value="Product3">Product3</option>
+                                    <!-- Add more products here -->
+                                </select>
+                            </td>
+                            <td><input type="number" class="form-control" placeholder="Enter amount"></td>
+                            <td><button type="button" class="btn btn-danger btn-sm remove-product">Remove</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button type="button" class="btn btn-success btn-sm" id="addProduct">Add Product</button>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-submit">Submit</button>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#addProduct').click(function() {
+                var newRow = '<tr>' +
+                    '<td>' +
+                    '<select class="form-control product-select">' +
+                    '<option value="">Select product</option>' +
+                    '<option value="Product1">Product1</option>' +
+                    '<option value="Product2">Product2</option>' +
+                    '<option value="Product3">Product3</option>' +
+                    '</select>' +
+                    '</td>' +
+                    '<td><input type="number" class="form-control" placeholder="Enter amount"></td>' +
+                    '<td><button type="button" class="btn btn-danger btn-sm remove-product">Remove</button></td>' +
+                    '</tr>';
+                $('#productTable tbody').append(newRow);
+            });
+
+            $(document).on('click', '.remove-product', function() {
+                $(this).closest('tr').remove();
+            });
+
+            $(document).on('change', '.product-select', function() {
+                var selectedProduct = $(this).val();
+                $('.product-select').not(this).find('option[value="' + selectedProduct + '"]').prop('disabled', true);
+            });
+        });
+    </script>
+</body>
+</html>
