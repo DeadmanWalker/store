@@ -13,10 +13,11 @@ public class LeadDAO {
 	static final String GET_LEADS = "SELECT * FROM leads, users WHERE lead_owner = users.id";
 	static final String GET_LEAD_BY_ID = "SELECT * FROM leads, users WHERE lead_owner = users.id AND leads.id=?";
 	static final String SAVE_LEAD = "INSERT INTO `qa_store`.`leads` (`lead_owner`, `name`, `company`, `title`, `email`, `phone`, `website`, `lead_source`, `lead_status`, `rating`) "
-			+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+			+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 	static final String UPDATE_LEAD = "UPDATE `qa_store`.`leads` "
 			+ "SET `lead_owner` = ?, `name` = ?, `company` = ?, `title` = ?, `email` = ?, `phone` = ?, `website` = ?, `lead_source` = ?, `lead_status` = ?, `rating` = ? "
 			+ "WHERE (`id` = ?);";
+	static final String DELETE_LEAD = "DELETE FROM `qa_store`.`leads` WHERE (`id` = ?);";
 	
 	public static ArrayList<Lead> getLeads() {
 		ArrayList<Lead> leads = new ArrayList<Lead>();
@@ -78,14 +79,13 @@ public class LeadDAO {
 			ps.setInt(1, lead.getLead_owner().getId());
 			ps.setString(2, lead.getName());
 			ps.setString(3, lead.getCompany());
-			ps.setString(4, lead.getName());
-			ps.setString(5, lead.getTitle());
-			ps.setString(6, lead.getEmail());
-			ps.setString(7, lead.getPhone());
-			ps.setString(8, lead.getWebsite());
-			ps.setString(9, lead.getLead_source());
-			ps.setString(10, lead.getLead_status());
-			ps.setString(11, lead.getRating());
+			ps.setString(4, lead.getTitle());
+			ps.setString(5, lead.getEmail());
+			ps.setString(6, lead.getPhone());
+			ps.setString(7, lead.getWebsite());
+			ps.setString(8, lead.getLead_source());
+			ps.setString(9, lead.getLead_status());
+			ps.setString(10, lead.getRating());
 			ps.execute();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -95,19 +95,29 @@ public class LeadDAO {
 	
 	public static void updateLead(Lead lead) {
 		try (Connection connection = DAO.getConnection(); 
-				PreparedStatement ps = connection.prepareStatement(SAVE_LEAD)) {
+				PreparedStatement ps = connection.prepareStatement(UPDATE_LEAD)) {
 			ps.setInt(1, lead.getLead_owner().getId());
 			ps.setString(2, lead.getName());
 			ps.setString(3, lead.getCompany());
-			ps.setString(4, lead.getName());
-			ps.setString(5, lead.getTitle());
-			ps.setString(6, lead.getEmail());
-			ps.setString(7, lead.getPhone());
-			ps.setString(8, lead.getWebsite());
-			ps.setString(9, lead.getLead_source());
-			ps.setString(10, lead.getLead_status());
-			ps.setString(11, lead.getRating());
-			ps.setInt(12, lead.getId());
+			ps.setString(4, lead.getTitle());
+			ps.setString(5, lead.getEmail());
+			ps.setString(6, lead.getPhone());
+			ps.setString(7, lead.getWebsite());
+			ps.setString(8, lead.getLead_source());
+			ps.setString(9, lead.getLead_status());
+			ps.setString(10, lead.getRating());
+			ps.setInt(11, lead.getId());
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static void deleteLead(int id) {
+		try (Connection connection = DAO.getConnection(); 
+				PreparedStatement ps = connection.prepareStatement(DELETE_LEAD)) {
+			ps.setInt(1, id);
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
