@@ -10,7 +10,6 @@ import com.example.store.model.Contact;
 import com.example.store.model.Lead;
 import com.example.store.model.Order;
 import com.example.store.model.OrderItem;
-import com.example.store.model.Product;
 import com.example.store.model.User;
 
 public class OrderDAO {
@@ -81,7 +80,15 @@ public class OrderDAO {
 			if(rs.next()) {
 				OrderItem orderItem = new OrderItem();
 				orderItem.setAmount(rs.getInt(3));
-				orderItems.add(orderItem);
+				order.setDue_date(rs.getDate(3));
+				order.setStatus(rs.getString(4));
+				order.setAddress(rs.getString(5));
+				Contact contact = new Contact();
+				contact.setId(rs.getInt(6));
+				contact.setName(rs.getString(8));
+				order.setContact(contact);
+				
+				return order;
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -93,7 +100,16 @@ public class OrderDAO {
 	public static void saveOrder(Order order) {
 		try (Connection connection = DAO.getConnection(); 
 				PreparedStatement ps = connection.prepareStatement(SAVE_LEAD)) {
-			
+			ps.setInt(1, lead.getLead_owner().getId());
+			ps.setString(2, lead.getName());
+			ps.setString(3, lead.getCompany());
+			ps.setString(4, lead.getTitle());
+			ps.setString(5, lead.getEmail());
+			ps.setString(6, lead.getPhone());
+			ps.setString(7, lead.getWebsite());
+			ps.setString(8, lead.getLead_source());
+			ps.setString(9, lead.getLead_status());
+			ps.setString(10, lead.getRating());
 			ps.execute();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
