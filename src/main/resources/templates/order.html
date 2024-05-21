@@ -18,9 +18,21 @@
         .order-table th, .order-table td {
             text-align: center;
         }
+		.navbar-nav .nav-link.create-btn {
+    background-color: #28a745;
+    color: white; 
+    padding: 8px 16px; 
+    border-radius: 4px; 
+}
+
+
+.navbar-nav .nav-link.create-btn:hover {
+    background-color: #218838;
+}
     </style>
 </head>
 <body>
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="/">Store Manager</a>
@@ -43,11 +55,18 @@
                         <a class="nav-link" href="/customer">Customers</a>
                     </li>
                 </ul>
+				
             </div>
         </div>
     </nav>
     <div class="container order-container">
         <h2>Orders List</h2>
+		<ul class="navbar-nav ml-auto">
+    <!-- Other navigation links -->
+    <li class="nav-item">
+        <a class="nav-link create-btn" href="/create">Create</a>
+    </li>
+</ul>
         <table id="ordersTable" class="table table-bordered order-table">
             <thead class="thead-dark">
                 <tr>
@@ -65,26 +84,39 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script>
         $(document).ready(function() {
-            $.ajax({
-                url: '/api/orders',
-                type: 'GET',
-                dataType: 'json',
-                success: function(data) {
-                    var ordersTable = $('#ordersTable tbody');
-                    $.each(data, function(index, order) {
-                        var row = '<tr>' +
-                            '<td>' + order.contactName + '</td>' +
-                            '<td>' + order.dueDate + '</td>' +
-                            '<td>' + order.status + '</td>' +
-                            '</tr>';
-                        ordersTable.append(row);
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error fetching orders:', error);
-                }
+    $.ajax({
+        url: '/api/orders',
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            var ordersTable = $('#ordersTable tbody');
+            $.each(data, function(index, order) {
+                var row = '<tr>' +
+                    '<td>' + order.contactName + '</td>' +
+                    '<td>' + order.dueDate + '</td>' +
+                    '<td>' + order.status + '</td>' +
+                    '<td><button class="btn btn-primary btn-sm edit-btn">Edit</button></td>' +
+                    '<td><button class="btn btn-danger btn-sm delete-btn">Delete</button></td>' +
+                    '</tr>';
+                ordersTable.append(row);
             });
-        });
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching orders:', error);
+        }
+    });
+
+    // Add click event listeners for edit and delete buttons
+    $('#ordersTable').on('click', '.edit-btn', function() {
+        // Handle edit button click
+        // Add your edit logic here
+    });
+
+    $('#ordersTable').on('click', '.delete-btn', function() {
+        // Handle delete button click
+        // Add your delete logic here
+    });
+});
     </script>
 </body>
 </html>
