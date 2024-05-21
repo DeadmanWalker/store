@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 import com.example.store.dao.ContactDAO;
 import com.example.store.dao.LeadDAO;
+import com.example.store.dao.OrderDAO;
 import com.example.store.model.Contact;
 import com.example.store.model.Lead;
+import com.example.store.model.Order;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -121,5 +123,26 @@ public class StoreController {
 		if (session.getAttribute("USER") == null)
 			return "redirect:/login";
 		return "order.html";
+	}
+	@GetMapping("/order/edit/{id}")
+	String getEditOrderView(HttpSession session, Model model, @PathVariable String id) {
+		if(session.getAttribute("USER") == null)
+			return "redirect:/login";
+		model.addAttribute("id", Integer.parseInt(id));
+		Order order = new Order();
+		if(!id.equals("0"))
+			order = OrderDAO.getOrder(Integer.parseInt(id));
+		model.addAttribute("order", order);
+		return "order-detail.html";
+	}
+	@PostMapping("order/save/{id}")
+	String createOrder(Order order, @PathVariable String id) {
+		OrderDAO.saveOrder(order);
+		return "redirect:/customer";
+	}
+	@DeleteMapping("order/delete/{id}")
+	String deleteOrder(Order order,@PathVariable String id) {
+		OrderDAO.deleteOrder(Integer.parseInt(id));
+		return "redirect:/customer";
 	}
 }
