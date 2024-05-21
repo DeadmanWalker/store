@@ -64,7 +64,7 @@
 		<ul class="navbar-nav ml-auto">
     <!-- Other navigation links -->
     <li class="nav-item">
-        <a class="nav-link create-btn" href="/create">Create</a>
+        <a class="nav-link create-btn" th:href="@{order/create/{id}(id=0)}">Create</a>
     </li>
 </ul>
         <table id="ordersTable" class="table table-bordered order-table">

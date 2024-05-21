@@ -135,6 +135,17 @@ public class StoreController {
 		model.addAttribute("order", order);
 		return "order-detail.html";
 	}
+	@GetMapping("/order/create/{id}")
+	String getCreateOrderView(HttpSession session, Model model, @PathVariable String id) {
+		if (session.getAttribute("USER") == null)
+			return "redirect:/login";
+		model.addAttribute("id", Integer.parseInt(id));
+		Order order = new Order();
+		if (!id.equals("0"))
+			order = OrderDAO.getOrder(Integer.parseInt(id));
+		model.addAttribute("order", order);
+		return "order.html";
+	}
 	@PostMapping("order/save/{id}")
 	String createOrder(Order order, @PathVariable String id) {
 		OrderDAO.saveOrder(order);
